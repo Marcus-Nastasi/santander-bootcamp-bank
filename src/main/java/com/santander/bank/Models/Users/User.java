@@ -15,6 +15,8 @@ public class User {
     @Column
     private String name;
     @Column
+    private String password;
+    @Column
     private String account_id;
     @Column
     private List<BigInteger> card_id;
@@ -33,6 +35,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getAccount_id() {
