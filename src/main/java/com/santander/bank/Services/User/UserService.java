@@ -26,7 +26,7 @@ public class UserService implements UserDetailsService, IUserService {
 
     @Override
     public UserDetails loadUserByUsername(String cpf) throws UsernameNotFoundException {
-        return userRepo.findByUserCpf(cpf);
+        return userRepo.findByCpf(cpf);
     }
 
     @Override
@@ -37,12 +37,12 @@ public class UserService implements UserDetailsService, IUserService {
 
     @Override
     public User findByCpf(String cpf) {
-        return userRepo.findByCpf(cpf);
+        return userRepo.findByUserCpf(cpf);
     }
 
     @Override
     public User create(User userToCreate) throws IllegalArgumentException {
-        if (userRepo.findByCpf(userToCreate.getCpf()) != null) throw new IllegalArgumentException("user already exists");
+        if (userRepo.findByUserCpf(userToCreate.getCpf()) != null) throw new IllegalArgumentException("user already exists");
         return userRepo.save(userToCreate);
     }
 }

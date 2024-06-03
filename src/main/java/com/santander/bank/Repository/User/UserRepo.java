@@ -8,9 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 public interface UserRepo extends JpaRepository<User, String> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM users WHERE(cpf=?1)")
-    User findByCpf(String cpf);
+    User findByUserCpf(String cpf);
 
-    UserDetails findByUserCpf(String cpf);
+    UserDetails findByCpf(String cpf);
 }
 
 

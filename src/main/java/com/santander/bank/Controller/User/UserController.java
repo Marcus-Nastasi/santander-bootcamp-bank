@@ -20,7 +20,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
+    @GetMapping(value = "")
     public ResponseEntity<List<User>> getAll() {
         return ResponseEntity.ok(userRepo.findAll());
     }
