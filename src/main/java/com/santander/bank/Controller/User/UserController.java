@@ -25,10 +25,21 @@ public class UserController {
         return ResponseEntity.ok(userRepo.findAll());
     }
 
+    @GetMapping(value = "/{id}")
+    public User get(@PathVariable String id) {
+        return userRepo.findById(id).get();
+    }
+
     @PostMapping(value = "/new")
     public ResponseEntity<String> insert(@RequestBody UserDTO user) {
         userService.create(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @DeleteMapping(value = "/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable String id) {
+        userRepo.deleteById(id);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 }
 

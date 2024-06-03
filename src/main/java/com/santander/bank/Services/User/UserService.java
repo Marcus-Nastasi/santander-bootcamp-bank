@@ -2,6 +2,7 @@ package com.santander.bank.Services.User;
 
 import com.google.gson.Gson;
 import com.santander.bank.DTO.User.UserDTO;
+import com.santander.bank.Enums.Roles;
 import com.santander.bank.Models.Accounts.Account;
 import com.santander.bank.Models.Cards.Card;
 import com.santander.bank.Models.Users.User;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -61,11 +61,11 @@ public class UserService implements UserDetailsService, IUserService {
         Card c = cardService.create();
         Card get = cardService.get(c.getNumber());
 
-        User newUser = new User();
-        newUser.setName(userToCreate.name());
-        newUser.setCpf(userToCreate.cpf());
-        newUser.setPassword(passwordEncoder.encode(userToCreate.password()));
-        newUser.setRole(userToCreate.roles());
+        User newUser = new User(
+            userToCreate.name(), userToCreate.cpf(),
+            passwordEncoder.encode(userToCreate.password()),
+            Roles.valueOf(userToCreate.roles())
+        );
 
         List<Object> cardList = new ArrayList<>();
         cardList.add(get);

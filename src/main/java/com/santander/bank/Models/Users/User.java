@@ -27,7 +27,17 @@ public class User implements UserDetails {
     @Column
     private String card_id = null;
     @Column
+    @Enumerated(EnumType.ORDINAL)
     private Roles role;
+
+    public User() {}
+
+    public User(String name, String cpf, String password, Roles role) {
+        this.name = name;
+        this.cpf = cpf;
+        this.password = password;
+        this.role = role;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -39,7 +49,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return this.cpf;
     }
 
     @Override
