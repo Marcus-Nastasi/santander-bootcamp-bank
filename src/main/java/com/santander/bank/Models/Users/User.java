@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class User implements UserDetails {
     @Column
     private String account_id;
     @Column
-    private List<BigInteger> card_id;
+    private final List<BigInteger> card_id = new ArrayList<>();
     @Column
     private Roles role;
 
@@ -105,10 +106,6 @@ public class User implements UserDetails {
 
     public List<BigInteger> getCard_id() {
         return card_id;
-    }
-
-    public void setCard_id(List<BigInteger> card_id) {
-        this.card_id = card_id;
     }
 
     public Roles getRole() {

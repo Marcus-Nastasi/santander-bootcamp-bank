@@ -1,13 +1,13 @@
 package com.santander.bank.Controller.User;
 
+import com.santander.bank.DTO.User.UserDTO;
 import com.santander.bank.Models.Users.User;
 import com.santander.bank.Repository.User.UserRepo;
 import com.santander.bank.Services.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,6 +23,12 @@ public class UserController {
     @GetMapping(value = "")
     public ResponseEntity<List<User>> getAll() {
         return ResponseEntity.ok(userRepo.findAll());
+    }
+
+    @PostMapping(value = "/new")
+    public ResponseEntity<String> insert(@RequestBody UserDTO user) {
+        userService.create(user);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
 
