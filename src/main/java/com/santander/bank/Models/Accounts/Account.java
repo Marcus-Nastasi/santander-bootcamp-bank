@@ -19,6 +19,46 @@ public class Account {
     private BigDecimal balance;
     @Column(precision = 13, scale = 2)
     private BigDecimal limits;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getAgency() {
+        return agency;
+    }
+
+    public void setAgency(String agency) {
+        this.agency = agency;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    public BigDecimal getLimits() {
+        return limits;
+    }
+
+    public void setLimits(BigDecimal limits) {
+        this.limits = limits;
+    }
 }
 
 
