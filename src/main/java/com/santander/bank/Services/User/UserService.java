@@ -7,6 +7,7 @@ import com.santander.bank.Models.Accounts.Account;
 import com.santander.bank.Models.Cards.Card;
 import com.santander.bank.Models.Users.User;
 import com.santander.bank.Repository.User.UserRepo;
+import com.santander.bank.Services.Account.AccountService;
 import com.santander.bank.Services.Card.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,6 +30,8 @@ public class UserService implements UserDetailsService, IUserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private CardService cardService;
+    @Autowired
+    private AccountService accountService;
     @Autowired
     private Gson gson;
 
@@ -60,6 +63,8 @@ public class UserService implements UserDetailsService, IUserService {
 
         Card c = cardService.create();
         Card get = cardService.get(c.getNumber());
+
+        Account account = accountService.create("0000-1", BigDecimal.valueOf(0.0), BigDecimal.valueOf(1000.00));
 
         User newUser = new User(
             userToCreate.name(), userToCreate.cpf(),
