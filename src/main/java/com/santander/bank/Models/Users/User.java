@@ -15,6 +15,8 @@ public class User {
     @Column
     private String name;
     @Column
+    private String cpf;
+    @Column
     private String password;
     @Column
     private String account_id;
@@ -35,6 +37,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public String getPassword() {
