@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 public interface IAccountService {
 
     Account create(String ag, BigDecimal bal, BigDecimal lim);
+    Account findByNbr(String number);
 }
 
 

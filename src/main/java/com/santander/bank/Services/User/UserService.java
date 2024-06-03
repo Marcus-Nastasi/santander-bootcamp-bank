@@ -65,6 +65,7 @@ public class UserService implements UserDetailsService, IUserService {
         Card get = cardService.get(c.getNumber());
 
         Account account = accountService.create("0000-1", BigDecimal.valueOf(0.0), BigDecimal.valueOf(1000.00));
+        Account getAc = accountService.findByNbr(account.getNumber());
 
         User newUser = new User(
             userToCreate.name(), userToCreate.cpf(),
@@ -75,6 +76,7 @@ public class UserService implements UserDetailsService, IUserService {
         List<Object> cardList = new ArrayList<>();
         cardList.add(get);
 
+        newUser.setAccount_id(getAc.getId());
         newUser.setCard_id(gson.toJson(cardList));
 
         userRepo.save(newUser);

@@ -26,6 +26,11 @@ public class AccountService implements IAccountService {
         return account1;
     }
 
+    @Override
+    public Account findByNbr(String number) {
+        return accountRepo.findByNumber(number);
+    }
+
     private String generateCardNumber() {
         return UUID.randomUUID().toString().substring(0, 5);
     }
