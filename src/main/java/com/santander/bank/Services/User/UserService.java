@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -73,8 +74,8 @@ public class UserService implements UserDetailsService, IUserService {
             Roles.valueOf(userToCreate.roles())
         );
 
-        List<Object> cardList = new ArrayList<>();
-        cardList.add(get);
+        List<BigInteger> cardList = new ArrayList<>();
+        cardList.add(get.getId());
 
         newUser.setAccount_id(getAc.getId());
         newUser.setCard_id(gson.toJson(cardList));
