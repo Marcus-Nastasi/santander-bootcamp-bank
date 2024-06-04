@@ -38,13 +38,15 @@ public class AccountController {
     }
 
     @PostMapping(value = "/transfer")
-    public ResponseEntity<String> transfer(@RequestBody String ac1, String ac2, Double value, @RequestHeader Map<String, String> headers) {
+    public ResponseEntity<String> transfer(@RequestBody String ac1, @RequestHeader Map<String, String> headers) {
         var json = gson.fromJson(ac1, Map.class);
+
         String ac1Id = (String) json.get("ac1");
         String ac2Id = (String) json.get("ac2");
         BigDecimal vl = BigDecimal.valueOf((Double) json.get("value"));
+        String token = headers.get("authorization").replace("Bearer ", "");
 
-        String acs = accountService.transfer(ac1Id, ac2Id, vl, headers.get("authorization"));
+        String acs = accountService.transfer(ac1Id, ac2Id, vl, token);
 
         if (acs == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not valid user");
 

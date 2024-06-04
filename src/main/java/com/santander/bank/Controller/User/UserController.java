@@ -30,6 +30,11 @@ public class UserController {
         return ResponseEntity.ok(userRepo.findById(id).orElseThrow(RuntimeException::new));
     }
 
+    @GetMapping(value = "/acc/{id}")
+    public ResponseEntity<User> accId(@PathVariable String id) {
+        return ResponseEntity.ok(userService.findByAccountId(id));
+    }
+
     @PostMapping(value = "/new")
     public ResponseEntity<String> insert(@RequestBody UserDTO user) {
         userService.create(user);

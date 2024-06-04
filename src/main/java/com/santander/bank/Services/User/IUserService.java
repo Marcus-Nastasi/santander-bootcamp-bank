@@ -11,6 +11,7 @@ public interface IUserService {
     User findById(String id);
     User findByCpf(String cpf);
     void create(UserDTO userToCreate);
+    User findByAccountId(String accountId);
 }
 
 

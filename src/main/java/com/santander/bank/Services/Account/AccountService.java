@@ -54,7 +54,7 @@ public class AccountService implements IAccountService {
 
         String cpf1 = tokenService.validate(token);
 
-        if (!cpf1.equals(u.getCpf())) return null;
+        if (!cpf1.equals(u.getCpf())) return "cpf on token, or token invalid";
 
         Account ac1 = accountRepo.findById(from).orElseThrow(RuntimeException::new);
         Account ac2 = accountRepo.findById(to).orElseThrow(RuntimeException::new);

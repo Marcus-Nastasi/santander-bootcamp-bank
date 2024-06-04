@@ -46,6 +46,10 @@ public class UserService implements UserDetailsService, IUserService {
         return userRepo.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
+    @Override
+    public User findByAccountId(String accountId) {
+        return userRepo.findByAccountId(accountId);
+    }
 
     @Override
     public User findByCpf(String cpf) {
