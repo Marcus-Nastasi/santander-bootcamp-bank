@@ -25,9 +25,17 @@ public class AccountController {
     @Autowired
     private Gson gson;
 
+    @PostMapping(value = "/deposit")
+    public ResponseEntity<String> deposit(@RequestBody String acc, BigDecimal value) {
+        var json = gson.fromJson(acc, Map.class);
+        String a = (String) json.get("acc");
+        BigDecimal v = BigDecimal.valueOf((Double) json.get("value"));
+        accountService.deposit(a, v);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body("ok");
+    }
+
     @PostMapping(value = "/transfer")
-    public ResponseEntity<String> transfer(@RequestBody String ac1, String ac2, Double value,
-                                         @RequestHeader Map<String, String> headers) {
+    public ResponseEntity<String> transfer(@RequestBody String ac1, String ac2, Double value, @RequestHeader Map<String, String> headers) {
 
         var json = gson.fromJson(ac1, Map.class);
         String ac1Id = (String) json.get("ac1");
@@ -35,6 +43,8 @@ public class AccountController {
         BigDecimal vl = BigDecimal.valueOf((Double) json.get("value"));
 
         String acs = accountService.transfer(ac1Id, ac2Id, vl, headers.get("authorization"));
+
+        if (acs == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not valid user");
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(acs);
     }
