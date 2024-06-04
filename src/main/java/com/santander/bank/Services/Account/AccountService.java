@@ -59,7 +59,7 @@ public class AccountService implements IAccountService {
         Account ac1 = accountRepo.findById(from).orElseThrow(RuntimeException::new);
         Account ac2 = accountRepo.findById(to).orElseThrow(RuntimeException::new);
 
-        if (ac1.getBalance().compareTo(value) < 0) return "do not have balance to do it";
+        if (ac1.getBalance().add(ac1.getLimits()).compareTo(value) < 0) return "do not have balance to do it";
 
         ac1.setBalance(ac1.getBalance().subtract(value));
         ac2.setBalance(ac2.getBalance().add(value));
