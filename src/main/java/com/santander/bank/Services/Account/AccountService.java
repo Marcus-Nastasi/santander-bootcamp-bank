@@ -21,7 +21,6 @@ public class AccountService implements IAccountService {
     @Autowired
     private TokenService tokenService;
 
-
     @Override
     public Account create(String ag, BigDecimal bal, BigDecimal lim) {
         Account account1 = new Account();
@@ -47,6 +46,14 @@ public class AccountService implements IAccountService {
     }
 
     @Override
+    public String withdraw(String acc, BigDecimal value) {
+        Account a = accountRepo.findById(acc).orElseThrow(RuntimeException::new);
+        a.setBalance(a.getBalance().subtract(value));
+        accountRepo.save(a);
+        return "withdraw done";
+    }
+
+    @Override
     public String transfer(String from, String to, BigDecimal value, String token) {
         User u = userRepo.findByAccountId(from);
 
@@ -54,7 +61,7 @@ public class AccountService implements IAccountService {
 
         String cpf1 = tokenService.validate(token);
 
-        if (!cpf1.equals(u.getCpf())) return "cpf on token, or token invalid";
+        if (!cpf1.equals(u.getCpf())) return "cpf on token invalid, or token invalid";
 
         Account ac1 = accountRepo.findById(from).orElseThrow(RuntimeException::new);
         Account ac2 = accountRepo.findById(to).orElseThrow(RuntimeException::new);
