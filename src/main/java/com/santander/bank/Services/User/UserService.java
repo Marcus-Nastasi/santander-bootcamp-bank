@@ -37,12 +37,6 @@ public class UserService implements UserDetailsService, IUserService {
     private Gson gson;
 
     @Override
-    public void transfer(Account from, Account to, BigDecimal value) {
-        from.setBalance(from.getBalance().subtract(value));
-        to.setBalance(to.getBalance().add(value));
-    }
-
-    @Override
     public UserDetails loadUserByUsername(String cpf) throws UsernameNotFoundException {
         return userRepo.findByCpf(cpf);
     }
@@ -68,11 +62,7 @@ public class UserService implements UserDetailsService, IUserService {
         Account account = accountService.create("0000-1", BigDecimal.valueOf(0.0), BigDecimal.valueOf(1000.00));
         Account getAc = accountService.findByNbr(account.getNumber());
 
-        User newUser = new User(
-            userToCreate.name(), userToCreate.cpf(),
-            passwordEncoder.encode(userToCreate.password()),
-            Roles.valueOf(userToCreate.roles())
-        );
+        User newUser = new User(userToCreate.name(), userToCreate.cpf(), passwordEncoder.encode(userToCreate.password()), Roles.valueOf(userToCreate.roles()));
 
         List<BigInteger> cardList = new ArrayList<>();
         cardList.add(get.getId());

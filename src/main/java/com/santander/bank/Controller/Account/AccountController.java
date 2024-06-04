@@ -28,10 +28,13 @@ public class AccountController {
     @PostMapping(value = "/deposit")
     public ResponseEntity<String> deposit(@RequestBody String acc, BigDecimal value) {
         var json = gson.fromJson(acc, Map.class);
+
         String a = (String) json.get("acc");
         BigDecimal v = BigDecimal.valueOf((Double) json.get("value"));
-        accountService.deposit(a, v);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("ok");
+
+        String d = accountService.deposit(a, v);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(d);
     }
 
     @PostMapping(value = "/transfer")

@@ -11,7 +11,6 @@ public interface IUserService {
     User findById(String id);
     User findByCpf(String cpf);
     void create(UserDTO userToCreate);
-    void transfer(Account from, Account to, BigDecimal value);
 }
 
 

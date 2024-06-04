@@ -40,10 +40,10 @@ public class AccountService implements IAccountService {
 
     @Override
     public String deposit(String acc, BigDecimal value) {
-        Account a = accountRepo.findById(acc).get();
+        Account a = accountRepo.findById(acc).orElseThrow(RuntimeException::new);
         a.setBalance(a.getBalance().add(value));
         accountRepo.save(a);
-        return "ok";
+        return "deposit done";
     }
 
     @Override
