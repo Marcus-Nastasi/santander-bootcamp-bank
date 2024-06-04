@@ -26,8 +26,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}")
-    public User get(@PathVariable String id) {
-        return userRepo.findById(id).get();
+    public ResponseEntity<User> get(@PathVariable String id) {
+        return ResponseEntity.ok(userRepo.findById(id).orElseThrow(RuntimeException::new));
     }
 
     @PostMapping(value = "/new")
