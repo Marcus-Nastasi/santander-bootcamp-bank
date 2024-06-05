@@ -26,13 +26,25 @@ public class AccountController {
     private Gson gson;
 
     @PostMapping(value = "/deposit")
-    public ResponseEntity<String> deposit(@RequestBody String acc, BigDecimal value) {
+    public ResponseEntity<String> deposit(@RequestBody String acc) {
         var json = gson.fromJson(acc, Map.class);
 
         String a = (String) json.get("acc");
         BigDecimal v = BigDecimal.valueOf((Double) json.get("value"));
 
         String d = accountService.deposit(a, v);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(d);
+    }
+
+    @PostMapping(value = "/withdraw")
+    public ResponseEntity<String> withdraw(@RequestBody String data) {
+        var jsonParsed = gson.fromJson(data, Map.class);
+
+        String a = (String) jsonParsed.get("acc");
+        BigDecimal v = BigDecimal.valueOf((Double) jsonParsed.get("value"));
+
+        String d = accountService.withdraw(a, v);
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(d);
     }
