@@ -1,6 +1,5 @@
 package com.santander.bank.Services.Card;
 
-import com.santander.bank.DTO.Card.CardDTO;
 import com.santander.bank.Models.Cards.Card;
 
 import java.math.BigDecimal;

@@ -35,7 +35,7 @@ public class CardController {
         BigDecimal vl = BigDecimal.valueOf(Double.parseDouble((String) jsonParsed.get("value")));
         String cpf = tokenService.validate(token);
 
-        if (u == null) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        if (u == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("null user");
         if (!cpf.equals(u.getCpf())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not the same user");
 
         String done = cardService.payOnDebit(u.getAccount_id(), vl, token);
