@@ -38,13 +38,15 @@ public class AccountController {
     }
 
     @PostMapping(value = "/withdraw")
-    public ResponseEntity<String> withdraw(@RequestBody String data) {
+    public ResponseEntity<String> withdraw(@RequestBody String data, @RequestHeader Map<String, String> headers) {
         var jsonParsed = gson.fromJson(data, Map.class);
 
         String a = (String) jsonParsed.get("acc");
         BigDecimal v = BigDecimal.valueOf((Double) jsonParsed.get("value"));
 
-        String d = accountService.withdraw(a, v);
+        String token = headers.get("authorization").replace("Bearer ", "");
+
+        String d = accountService.withdraw(a, v, token);
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(d);
     }

@@ -10,7 +10,7 @@ public interface IAccountService {
     Account findByNbr(String number);
     String transfer(String ac1, String ac2, BigDecimal value, String token);
     String deposit(String acc, BigDecimal value);
-    String withdraw(String acc, BigDecimal value);
+    String withdraw(String acc, BigDecimal value, String token);
 }
 
 

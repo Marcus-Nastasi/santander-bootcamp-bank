@@ -40,16 +40,25 @@ public class AccountService implements IAccountService {
     @Override
     public String deposit(String acc, BigDecimal value) {
         Account a = accountRepo.findById(acc).orElseThrow(RuntimeException::new);
+
         a.setBalance(a.getBalance().add(value));
         accountRepo.save(a);
+
         return "deposit done";
     }
 
     @Override
-    public String withdraw(String acc, BigDecimal value) {
+    public String withdraw(String acc, BigDecimal value, String token) {
+        User u = userRepo.findByAccountId(acc);
+        String cpf = tokenService.validate(token);
+
+        if (!cpf.equals(u.getCpf())) return "cpf on token invalid, or token invalid";
+
         Account a = accountRepo.findById(acc).orElseThrow(RuntimeException::new);
+
         a.setBalance(a.getBalance().subtract(value));
         accountRepo.save(a);
+
         return "withdraw done";
     }
 
