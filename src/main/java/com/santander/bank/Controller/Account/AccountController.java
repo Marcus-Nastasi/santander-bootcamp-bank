@@ -50,8 +50,8 @@ public class AccountController {
     }
 
     @PostMapping(value = "/transfer")
-    public ResponseEntity<String> transfer(@RequestBody String ac1, @RequestHeader Map<String, String> headers) {
-        var json = gson.fromJson(ac1, Map.class);
+    public ResponseEntity<String> transfer(@RequestBody String data, @RequestHeader Map<String, String> headers) {
+        var json = gson.fromJson(data, Map.class);
 
         String ac1Id = (String) json.get("ac1");
         String ac2Id = (String) json.get("ac2");

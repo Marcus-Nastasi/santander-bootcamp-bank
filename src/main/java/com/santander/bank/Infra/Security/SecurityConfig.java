@@ -21,19 +21,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return(
-                httpSecurity.csrf(AbstractHttpConfigurer::disable)
-                    .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                    .authorizeHttpRequests(
-                        http -> http
-                            .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                            .requestMatchers(HttpMethod.POST, "/api/account/transfer").hasRole("USER")
-                            .requestMatchers(HttpMethod.POST, "/api/account/deposit").hasRole("USER")
-                            .requestMatchers(HttpMethod.POST, "/api/user/new").hasRole("ADMIN")
-                            .requestMatchers(HttpMethod.DELETE, "/api/user/delete/{id}").hasRole("ADMIN")
-                            .anyRequest().authenticated()
-                    )
-                    .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                    .build()
+            httpSecurity.csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(
+                    http -> http
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/account/transfer").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/api/account/deposit").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/api/user/new").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/user/delete/{id}").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .build()
         );
     }
 }
