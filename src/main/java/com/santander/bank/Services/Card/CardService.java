@@ -2,6 +2,7 @@ package com.santander.bank.Services.Card;
 
 import com.santander.bank.Models.Cards.Card;
 import com.santander.bank.Repository.Card.CardRepo;
+import com.santander.bank.Services.Account.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,8 @@ public class CardService implements ICardService {
 
     @Autowired
     private CardRepo cardRepo;
+    @Autowired
+    private AccountService accountService;
 
     @Override
     public Card create() {
@@ -26,6 +29,12 @@ public class CardService implements ICardService {
     @Override
     public Card get(String number) {
         return cardRepo.findByNumber(number);
+    }
+
+    @Override
+    public String payOnDebit(String acc, BigDecimal value, String token) {
+        accountService.withdraw(acc, value, token);
+        return "payment done on credit";
     }
 
     private String generateCardNumber() {
