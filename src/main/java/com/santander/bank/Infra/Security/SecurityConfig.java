@@ -26,6 +26,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                     http -> http
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/card/debit").hasRole("USER")
                         .requestMatchers(HttpMethod.POST, "/api/account/transfer").hasRole("USER")
                         .requestMatchers(HttpMethod.POST, "/api/account/deposit").hasRole("USER")
                         .requestMatchers(HttpMethod.POST, "/api/user/new").hasRole("ADMIN")

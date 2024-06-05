@@ -40,7 +40,7 @@ public class CardController {
 
         String done = cardService.payOnDebit(u.getAccount_id(), vl, token);
 
-        return ResponseEntity.accepted().body("done payment on credit");
+        return ResponseEntity.accepted().body(done);
     }
 }
 
