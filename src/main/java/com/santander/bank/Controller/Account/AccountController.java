@@ -1,10 +1,11 @@
 package com.santander.bank.Controller.Account;
 
 import com.google.gson.Gson;
+import com.santander.bank.DTO.Account.DepositDTO;
+import jakarta.validation.Valid;
 import com.santander.bank.Repository.Account.AccountRepo;
 import com.santander.bank.Repository.User.UserRepo;
 import com.santander.bank.Services.Account.AccountService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +28,8 @@ public class AccountController {
     private Gson gson;
 
     @PostMapping(value = "/deposit")
-    public ResponseEntity<String> deposit(@RequestBody @Valid String data) {
-        var json = gson.fromJson(data, Map.class);
-
-        String a = (String) json.get("acc");
-        BigDecimal v = BigDecimal.valueOf((Double) json.get("value"));
-
-        String d = accountService.deposit(a, v);
-
+    public ResponseEntity<String> deposit(@RequestBody @Valid DepositDTO data) {
+        String d = accountService.deposit(data.account(), data.value());
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(d);
     }
 
