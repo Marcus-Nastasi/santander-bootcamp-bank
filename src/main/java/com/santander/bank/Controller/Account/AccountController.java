@@ -2,6 +2,7 @@ package com.santander.bank.Controller.Account;
 
 import com.google.gson.Gson;
 import com.santander.bank.DTO.Account.DepositDTO;
+import com.santander.bank.DTO.Account.TransferDTO;
 import com.santander.bank.DTO.Account.WithdrawDTO;
 import jakarta.validation.Valid;
 import com.santander.bank.Repository.Account.AccountRepo;
@@ -12,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.Map;
 
 @RestController
@@ -42,15 +42,9 @@ public class AccountController {
     }
 
     @PostMapping(value = "/transfer")
-    public ResponseEntity<String> transfer(@RequestBody @Valid String data, @RequestHeader Map<String, String> headers) {
-        var json = gson.fromJson(data, Map.class);
-
-        String ac1Id = (String) json.get("ac1");
-        String ac2Id = (String) json.get("ac2");
-        BigDecimal vl = BigDecimal.valueOf((Double) json.get("value"));
+    public ResponseEntity<String> transfer(@RequestBody @Valid TransferDTO data, @RequestHeader Map<String, String> headers) {
         String token = headers.get("authorization").replace("Bearer ", "");
-
-        String acs = accountService.transfer(ac1Id, ac2Id, vl, token);
+        String acs = accountService.transfer(data.account1(), data.account2(), data.value(), token);
 
         if (acs == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not valid user");
 
