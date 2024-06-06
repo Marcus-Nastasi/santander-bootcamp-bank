@@ -44,7 +44,7 @@ public class AccountController {
     @PostMapping(value = "/transfer")
     public ResponseEntity<String> transfer(@RequestBody @Valid TransferDTO data, @RequestHeader Map<String, String> headers) {
         String token = headers.get("authorization").replace("Bearer ", "");
-        String acs = accountService.transfer(data.fromAccount1(), data.toAccount(), data.value(), token);
+        String acs = accountService.transfer(data.fromAccount(), data.toAccount(), data.value(), token);
 
         if (acs == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not valid user");
 
