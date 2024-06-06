@@ -65,17 +65,15 @@ public class AccountService implements IAccountService {
     @Override
     public String transfer(String from, String to, BigDecimal value, String token) {
         User u = userRepo.findByAccountId(from);
+        String cpf = tokenService.validate(token);
 
         if (u == null) return null;
-
-        String cpf1 = tokenService.validate(token);
-
-        if (!cpf1.equals(u.getCpf())) return "cpf on token invalid, or token invalid";
+        if (!cpf.equals(u.getCpf())) return "cpf on token invalid, or token invalid";
 
         Account ac1 = accountRepo.findById(from).orElseThrow(RuntimeException::new);
         Account ac2 = accountRepo.findById(to).orElseThrow(RuntimeException::new);
 
-        if (ac1.getBalance().add(ac1.getLimits()).compareTo(value) < 0) return "do not have balance to do it";
+        if (ac1.getBalance().add(ac1.getLimits()).compareTo(value) < 0) return "do not have balance";
 
         ac1.setBalance(ac1.getBalance().subtract(value));
         ac2.setBalance(ac2.getBalance().add(value));
@@ -83,7 +81,7 @@ public class AccountService implements IAccountService {
         accountRepo.save(ac1);
         accountRepo.save(ac2);
 
-        return "ac1 balance: " + ac1.getBalance() + ", ac2 balance: " + ac2.getBalance();
+        return "{\"account from\": " + ac1.getBalance() + ", \"account to\":" + ac2.getBalance() + '}';
     }
 
     private String generateAccountNumber() {
