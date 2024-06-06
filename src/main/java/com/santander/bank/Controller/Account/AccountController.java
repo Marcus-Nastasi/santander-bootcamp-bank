@@ -1,10 +1,10 @@
 package com.santander.bank.Controller.Account;
 
 import com.google.gson.Gson;
+import jakarta.validation.Valid;
 import com.santander.bank.DTO.Account.DepositDTO;
 import com.santander.bank.DTO.Account.TransferDTO;
 import com.santander.bank.DTO.Account.WithdrawDTO;
-import jakarta.validation.Valid;
 import com.santander.bank.Repository.Account.AccountRepo;
 import com.santander.bank.Repository.User.UserRepo;
 import com.santander.bank.Services.Account.AccountService;
@@ -44,7 +44,7 @@ public class AccountController {
     @PostMapping(value = "/transfer")
     public ResponseEntity<String> transfer(@RequestBody @Valid TransferDTO data, @RequestHeader Map<String, String> headers) {
         String token = headers.get("authorization").replace("Bearer ", "");
-        String acs = accountService.transfer(data.account1(), data.account2(), data.value(), token);
+        String acs = accountService.transfer(data.fromAccount1(), data.toAccount(), data.value(), token);
 
         if (acs == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not valid user");
 
