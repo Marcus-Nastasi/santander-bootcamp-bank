@@ -51,10 +51,9 @@ public class AccountService implements IAccountService {
     public String withdraw(String acc, BigDecimal value, String token) {
         User u = userRepo.findByAccountId(acc);
         String cpf = tokenService.validate(token);
+        Account a = accountRepo.findById(acc).orElseThrow(RuntimeException::new);
 
         if (!cpf.equals(u.getCpf())) return "cpf on token invalid, or token invalid";
-
-        Account a = accountRepo.findById(acc).orElseThrow(RuntimeException::new);
 
         a.setBalance(a.getBalance().subtract(value));
         accountRepo.save(a);
@@ -66,22 +65,20 @@ public class AccountService implements IAccountService {
     public String transfer(String from, String to, BigDecimal value, String token) {
         User u = userRepo.findByAccountId(from);
         String cpf = tokenService.validate(token);
+        Account fromAc = accountRepo.findById(from).orElseThrow(RuntimeException::new);
+        Account toAc = accountRepo.findById(to).orElseThrow(RuntimeException::new);
 
         if (u == null) return null;
         if (!cpf.equals(u.getCpf())) return "cpf on token invalid, or token invalid";
+        if (fromAc.getBalance().add(fromAc.getLimits()).compareTo(value) < 0) return "do not have balance";
 
-        Account ac1 = accountRepo.findById(from).orElseThrow(RuntimeException::new);
-        Account ac2 = accountRepo.findById(to).orElseThrow(RuntimeException::new);
+        fromAc.setBalance(fromAc.getBalance().subtract(value));
+        toAc.setBalance(toAc.getBalance().add(value));
 
-        if (ac1.getBalance().add(ac1.getLimits()).compareTo(value) < 0) return "do not have balance";
+        accountRepo.save(fromAc);
+        accountRepo.save(toAc);
 
-        ac1.setBalance(ac1.getBalance().subtract(value));
-        ac2.setBalance(ac2.getBalance().add(value));
-
-        accountRepo.save(ac1);
-        accountRepo.save(ac2);
-
-        return "{\"account from\": " + ac1.getBalance() + ", \"account to\":" + ac2.getBalance() + '}';
+        return "{\"account from\": " + fromAc.getBalance() + ", \"account to\":" + toAc.getBalance() + '}';
     }
 
     private String generateAccountNumber() {
