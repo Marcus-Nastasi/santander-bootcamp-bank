@@ -2,6 +2,7 @@ package com.santander.bank.Controller.Account;
 
 import com.google.gson.Gson;
 import com.santander.bank.DTO.Account.DepositDTO;
+import com.santander.bank.DTO.Account.WithdrawDTO;
 import jakarta.validation.Valid;
 import com.santander.bank.Repository.Account.AccountRepo;
 import com.santander.bank.Repository.User.UserRepo;
@@ -34,16 +35,9 @@ public class AccountController {
     }
 
     @PostMapping(value = "/withdraw")
-    public ResponseEntity<String> withdraw(@RequestBody @Valid String data, @RequestHeader Map<String, String> headers) {
-        var jsonParsed = gson.fromJson(data, Map.class);
-
-        String a = (String) jsonParsed.get("acc");
-        BigDecimal v = BigDecimal.valueOf((Double) jsonParsed.get("value"));
-
+    public ResponseEntity<String> withdraw(@RequestBody @Valid WithdrawDTO data, @RequestHeader Map<String, String> headers) {
         String token = headers.get("authorization").replace("Bearer ", "");
-
-        String d = accountService.withdraw(a, v, token);
-
+        String d = accountService.withdraw(data.account(), data.value(), token);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(d);
     }
 
