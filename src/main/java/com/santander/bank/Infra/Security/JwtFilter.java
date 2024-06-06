@@ -31,6 +31,8 @@ public class JwtFilter extends OncePerRequestFilter {
             String cpf = tokenService.validate(token);
             UserDetails u = userRepo.findByCpf(cpf);
 
+            if (u == null) return;
+
             var auth = new UsernamePasswordAuthenticationToken(u, null, u.getAuthorities());
 
             SecurityContextHolder.getContext().setAuthentication(auth);

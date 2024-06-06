@@ -22,7 +22,9 @@ public class UserController {
 
     @GetMapping(value = "")
     public ResponseEntity<List<User>> getAll() {
-        return ResponseEntity.ok(userRepo.findAll());
+        List<User> uL = userRepo.findAll();
+        if (uL.isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.ok(uL);
     }
 
     @GetMapping(value = "/{id}")

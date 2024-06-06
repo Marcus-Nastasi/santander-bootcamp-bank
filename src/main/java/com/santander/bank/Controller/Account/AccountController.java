@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.santander.bank.Repository.Account.AccountRepo;
 import com.santander.bank.Repository.User.UserRepo;
 import com.santander.bank.Services.Account.AccountService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +27,8 @@ public class AccountController {
     private Gson gson;
 
     @PostMapping(value = "/deposit")
-    public ResponseEntity<String> deposit(@RequestBody String acc) {
-        var json = gson.fromJson(acc, Map.class);
+    public ResponseEntity<String> deposit(@RequestBody @Valid String data) {
+        var json = gson.fromJson(data, Map.class);
 
         String a = (String) json.get("acc");
         BigDecimal v = BigDecimal.valueOf((Double) json.get("value"));
@@ -38,7 +39,7 @@ public class AccountController {
     }
 
     @PostMapping(value = "/withdraw")
-    public ResponseEntity<String> withdraw(@RequestBody String data, @RequestHeader Map<String, String> headers) {
+    public ResponseEntity<String> withdraw(@RequestBody @Valid String data, @RequestHeader Map<String, String> headers) {
         var jsonParsed = gson.fromJson(data, Map.class);
 
         String a = (String) jsonParsed.get("acc");
@@ -52,7 +53,7 @@ public class AccountController {
     }
 
     @PostMapping(value = "/transfer")
-    public ResponseEntity<String> transfer(@RequestBody String data, @RequestHeader Map<String, String> headers) {
+    public ResponseEntity<String> transfer(@RequestBody @Valid String data, @RequestHeader Map<String, String> headers) {
         var json = gson.fromJson(data, Map.class);
 
         String ac1Id = (String) json.get("ac1");
