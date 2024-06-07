@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class GlobalException {
+public class GlobalException extends Throwable {
 
     //private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
