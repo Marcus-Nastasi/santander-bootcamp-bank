@@ -76,7 +76,7 @@ public class CardController {
     public ResponseEntity<String> growLimit(@RequestBody @Valid LimitGrowDTO data, @RequestHeader Map<String, String> headers) {
         String token = headers.get("authorization").replace("Bearer ", "");
         String resp = cardService.growLimit(data.id(), token);
-        return ResponseEntity.ok(resp);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(resp);
     }
 }
 
