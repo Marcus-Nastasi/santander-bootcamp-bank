@@ -1,6 +1,7 @@
 package com.santander.bank.Controller.Card;
 
 import com.google.gson.Gson;
+import com.santander.bank.DTO.Card.LimitGrowDTO;
 import com.santander.bank.DTO.Card.PayInvoiceDTO;
 import com.santander.bank.DTO.Card.PayOnDebitDTO;
 import com.santander.bank.DTO.Card.PaymentCreditDTO;
@@ -69,6 +70,13 @@ public class CardController {
         String resp = cardService.payInvoice(data.id(), data.account(), token);
 
         return (resp != null) ? ResponseEntity.accepted().body(resp) : ResponseEntity.badRequest().body("null payment");
+    }
+
+    @PostMapping(value = "/limit/grow")
+    public ResponseEntity<String> growLimit(@RequestBody @Valid LimitGrowDTO data, @RequestHeader Map<String, String> headers) {
+        String token = headers.get("authorization").replace("Bearer ", "");
+        String resp = cardService.growLimit(data.id(), token);
+        return ResponseEntity.ok(resp);
     }
 }
 

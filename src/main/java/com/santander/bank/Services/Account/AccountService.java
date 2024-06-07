@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.UUID;
 
 @Service
@@ -83,6 +84,30 @@ public class AccountService implements IAccountService {
 
     private String generateAccountNumber() {
         return UUID.randomUUID().toString().substring(0, 5);
+    }
+
+    // limit grow evaluation
+    public BigDecimal limitEvaluation(BigInteger cardId, BigDecimal limitNow, String token) throws RuntimeException {
+        User u = userRepo.findByCardId(String.valueOf(cardId));
+        String cpf = tokenService.validate(token);
+
+        if (u == null) throw new RuntimeException("null user");
+        if (!cpf.equals(u.getCpf())) throw new RuntimeException("invalid token");
+
+        Account a = accountRepo.findById(u.getAccount_id()).orElseThrow(RuntimeException::new);
+        BigDecimal balance = a.getBalance();
+        BigDecimal newLimit = null;
+
+        if (balance.compareTo(BigDecimal.valueOf(1000)) < 0) newLimit = BigDecimal.valueOf(0);
+        if (balance.compareTo(BigDecimal.valueOf(10000)) >= 0) newLimit = BigDecimal.valueOf(4000);
+        if (balance.compareTo(BigDecimal.valueOf(30000)) >= 0) newLimit = BigDecimal.valueOf(10000);
+        if (balance.compareTo(BigDecimal.valueOf(50000)) >= 0) newLimit = BigDecimal.valueOf(15000);
+        if (balance.compareTo(BigDecimal.valueOf(70000)) >= 0) newLimit = BigDecimal.valueOf(20000);
+        if (balance.compareTo(BigDecimal.valueOf(80000)) >= 0) newLimit = BigDecimal.valueOf(25000);
+        if (balance.compareTo(BigDecimal.valueOf(90000)) >= 0) newLimit = BigDecimal.valueOf(30000);
+        if (balance.compareTo(BigDecimal.valueOf(100000)) >= 0) newLimit = BigDecimal.valueOf(100000000);
+
+        return newLimit;
     }
 }
 

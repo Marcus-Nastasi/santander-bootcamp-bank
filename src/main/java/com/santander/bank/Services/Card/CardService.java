@@ -71,9 +71,14 @@ public class CardService implements ICardService {
     }
 
     @Override
-    public String growLimit(BigInteger id, String account, String token) {
+    public String growLimit(BigInteger id, String token) {
         // to-do: method that validates balance value, and set new card limit if possible
-        return null;
+        Card c = cardRepo.findById(id).orElseThrow(RuntimeException::new);
+        BigDecimal newLimit = accountService.limitEvaluation(id, c.getLimits(), token);
+        if (newLimit == null) return "nothing to update";
+        c.setLimits(newLimit);
+        cardRepo.save(c);
+        return "updated limit. New limit: $" + c.getLimits();
     }
 
     private String generateCardNumber() {
