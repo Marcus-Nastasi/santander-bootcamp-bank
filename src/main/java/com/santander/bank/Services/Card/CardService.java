@@ -70,6 +70,12 @@ public class CardService implements ICardService {
         return "thank you for paying your invoice! new limit: R$" + c.getLimits().subtract(c.getLimit_spent());
     }
 
+    @Override
+    public String growLimit(BigInteger id, String account, String token) {
+        // to-do: method that validates balance value, and set new card limit if possible
+        return null;
+    }
+
     private String generateCardNumber() {
         return UUID.randomUUID().toString().substring(0, 15);
     }

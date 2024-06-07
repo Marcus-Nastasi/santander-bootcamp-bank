@@ -13,6 +13,7 @@ public interface ICardService {
     String payOnDebit(String acc, BigDecimal value, String token);
     String payOnCredit(BigInteger id, BigDecimal value, String token);
     String payInvoice(BigInteger id, String account, String token);
+    String growLimit(BigInteger id, String account, String token);
 }
 
 
