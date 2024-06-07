@@ -1,6 +1,5 @@
 package com.santander.bank.Services.Card;
 
-import com.santander.bank.Handler.GlobalException;
 import com.santander.bank.Models.Accounts.Account;
 import com.santander.bank.Models.Cards.Card;
 import com.santander.bank.Repository.Account.AccountRepo;
