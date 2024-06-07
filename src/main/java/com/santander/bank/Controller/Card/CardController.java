@@ -8,6 +8,7 @@ import com.santander.bank.Repository.User.UserRepo;
 import com.santander.bank.Services.Card.CardService;
 import com.santander.bank.Services.Token.TokenService;
 import jakarta.validation.Valid;
+import org.hibernate.dialect.unique.CreateTableUniqueDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class CardController {
     private Gson gson;
 
     @PostMapping(value = "/debit")
-    public ResponseEntity<String> payDebitCard(@RequestBody PayOnDebitDTO data, @RequestHeader Map<String, String> header) {
+    public ResponseEntity<String> payDebitCard(@RequestBody @Valid PayOnDebitDTO data, @RequestHeader Map<String, String> header) {
         String token = header.get("authorization").replace("Bearer ", "");
         User u = userRepo.findByCardId(String.valueOf(data.id()));
         String cpf = tokenService.validate(token);
@@ -52,9 +53,7 @@ public class CardController {
 
         String resp = cardService.payOnCredit(data.id(), data.value(), token);
 
-        if (resp == null) return ResponseEntity.badRequest().body("null payment");
-
-        return ResponseEntity.accepted().body(resp);
+        return (resp != null) ? ResponseEntity.accepted().body(resp) : ResponseEntity.badRequest().body("null payment");
     }
 }
 
