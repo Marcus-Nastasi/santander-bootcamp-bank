@@ -32,6 +32,8 @@ public class SecurityConfig extends DelegatingWebMvcConfiguration {
                         .requestMatchers(HttpMethod.POST, "/api/card/credit").hasRole("USER")
                         .requestMatchers(HttpMethod.POST, "/api/account/transfer").hasRole("USER")
                         .requestMatchers(HttpMethod.POST, "/api/account/deposit").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/api/user").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/user/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/user/new").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/user/delete/{id}").hasRole("ADMIN")
                         .anyRequest().authenticated()

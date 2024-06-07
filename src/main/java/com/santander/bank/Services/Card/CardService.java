@@ -44,10 +44,13 @@ public class CardService implements ICardService {
 
     @Override
     public String payOnCredit(BigInteger id, BigDecimal value, String token) {
-        Card c = this.cardRepo.findById(id).orElseThrow(RuntimeException::new);
+        Card c = cardRepo.findById(id).orElseThrow(RuntimeException::new);
+
         if (c.getLimits().subtract(c.getLimit_spent()).compareTo(value) < 0) return null;
+
         c.setLimit_spent(c.getLimit_spent().add(value));
-        this.cardRepo.save(c);
+        cardRepo.save(c);
+
         return "payment done on credit. limit: $" + c.getLimits().subtract(c.getLimit_spent());
     }
 
