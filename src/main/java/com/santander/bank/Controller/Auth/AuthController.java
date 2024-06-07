@@ -35,8 +35,7 @@ public class AuthController {
 
         if (!pass) return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("wrong password");
 
-        String token = tokenService.generate(u);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(token);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(tokenService.generate(u));
     }
 }
 
