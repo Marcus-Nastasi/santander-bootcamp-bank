@@ -1,6 +1,7 @@
 package com.santander.bank.Controller.Card;
 
 import com.google.gson.Gson;
+import com.santander.bank.DTO.Card.PayInvoiceDTO;
 import com.santander.bank.DTO.Card.PayOnDebitDTO;
 import com.santander.bank.DTO.Card.PaymentCreditDTO;
 import com.santander.bank.Models.Users.User;
@@ -52,6 +53,20 @@ public class CardController {
         if (!cpf.equals(u.getCpf())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not the same user");
 
         String resp = cardService.payOnCredit(data.id(), data.value(), token);
+
+        return (resp != null) ? ResponseEntity.accepted().body(resp) : ResponseEntity.badRequest().body("null payment");
+    }
+
+    @PostMapping(value = "/invoice/pay")
+    public ResponseEntity<String> payInvoice(@RequestBody @Valid PayInvoiceDTO data, @RequestHeader Map<String, String> header) {
+        String token = header.get("authorization").replace("Bearer ", "");
+        User u = userRepo.findByCardId(String.valueOf(data.id()));
+        String cpf = tokenService.validate(token);
+
+        if (u == null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("null user");
+        if (!cpf.equals(u.getCpf())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not the same user");
+
+        String resp = cardService.payInvoice(data.id(), data.account(), token);
 
         return (resp != null) ? ResponseEntity.accepted().body(resp) : ResponseEntity.badRequest().body("null payment");
     }
