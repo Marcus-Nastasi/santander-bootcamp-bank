@@ -75,7 +75,7 @@ public class CardService implements ICardService {
         Card c = cardRepo.findById(id).orElseThrow(RuntimeException::new);
         BigDecimal newLimit = accountService.limitEvaluation(id, c.getLimits(), token);
 
-        if (newLimit == null) return "nothing to update";
+        if (newLimit == null || newLimit.equals(BigDecimal.valueOf(0))) return "new limit not approved";
 
         c.setLimits(newLimit);
         cardRepo.save(c);
