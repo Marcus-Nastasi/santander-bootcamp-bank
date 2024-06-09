@@ -6,23 +6,19 @@ import com.santander.bank.DTO.Card.PayInvoiceDTO;
 import com.santander.bank.DTO.Card.PayOnDebitDTO;
 import com.santander.bank.DTO.Card.PaymentCreditDTO;
 import com.santander.bank.DTO.User.FindCpfDTO;
-import com.santander.bank.Models.Accounts.Account;
 import com.santander.bank.Models.Cards.Card;
 import com.santander.bank.Models.Users.User;
+import com.santander.bank.Repository.Card.CardRepo;
 import com.santander.bank.Repository.User.UserRepo;
 import com.santander.bank.Services.Card.CardService;
 import com.santander.bank.Services.Token.TokenService;
 import jakarta.validation.Valid;
-import org.hibernate.dialect.unique.CreateTableUniqueDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -33,11 +29,19 @@ public class CardController {
     @Autowired
     private CardService cardService;
     @Autowired
+    private CardRepo cardRepo;
+    @Autowired
     private UserRepo userRepo;
     @Autowired
     private TokenService tokenService;
     @Autowired
     private Gson gson;
+
+    @GetMapping(value = "/get/{id}")
+    public ResponseEntity<Card> getByCardId(@PathVariable BigInteger id, @RequestHeader Map<String, String> headers) {
+        Card c = cardRepo.findById(id).orElseThrow(RuntimeException::new);
+        return ResponseEntity.ok(c);
+    }
 
     @GetMapping(value = "/get")
     public ResponseEntity<List> getByUserCpf(@RequestBody @Valid FindCpfDTO data, @RequestHeader Map<String, String> headers) {
