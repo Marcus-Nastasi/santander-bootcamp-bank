@@ -1,6 +1,10 @@
 package com.santander.bank.Controller.Account;
 
 import com.google.gson.Gson;
+import com.santander.bank.DTO.User.FindCpfDTO;
+import com.santander.bank.Models.Accounts.Account;
+import com.santander.bank.Models.Users.User;
+import com.santander.bank.Services.Token.TokenService;
 import jakarta.validation.Valid;
 import com.santander.bank.DTO.Account.DepositDTO;
 import com.santander.bank.DTO.Account.TransferDTO;
@@ -26,7 +30,23 @@ public class AccountController {
     @Autowired
     private UserRepo userRepo;
     @Autowired
+    private TokenService tokenService;
+    @Autowired
     private Gson gson;
+
+    @GetMapping(value = "/get")
+    public ResponseEntity<Account> findByUserCpf(@RequestBody @Valid FindCpfDTO data, @RequestHeader Map<String, String> headers) {
+        User u = userRepo.findByUserCpf(data.cpf());
+        String token = headers.get("authorization").replace("Bearer ", "");
+        String cpf = tokenService.validate(token);
+
+        if (u == null) return ResponseEntity.badRequest().build();
+        if (!cpf.equals(u.getCpf())) return ResponseEntity.badRequest().build();
+
+        Account a = accountRepo.findById(u.getAccount_id()).orElseThrow(RuntimeException::new);
+
+        return (a != null) ? ResponseEntity.ok(a) : ResponseEntity.badRequest().build();
+    }
 
     @PostMapping(value = "/deposit")
     public ResponseEntity<String> deposit(@RequestBody @Valid DepositDTO data) {
