@@ -40,7 +40,7 @@ public class CardController {
     private Gson gson;
 
     @GetMapping(value = "/get")
-    public ResponseEntity<String> getByUserCpf(@RequestBody @Valid FindCpfDTO data, @RequestHeader Map<String, String> headers) {
+    public ResponseEntity<List> getByUserCpf(@RequestBody @Valid FindCpfDTO data, @RequestHeader Map<String, String> headers) {
         User u = userRepo.findByUserCpf(data.cpf());
         String token = headers.get("authorization").replace("Bearer ", "");
         String cpf = tokenService.validate(token);
@@ -48,7 +48,7 @@ public class CardController {
         if (u == null) return ResponseEntity.badRequest().build();
         if (!cpf.equals(u.getCpf())) return ResponseEntity.badRequest().build();
 
-        return ResponseEntity.ok(gson.toJson(u.getCard_id(), String.class));
+        return ResponseEntity.ok(gson.fromJson(u.getCard_id(), List.class));
     }
 
     @PostMapping(value = "/debit")
