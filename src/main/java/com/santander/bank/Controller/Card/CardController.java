@@ -5,6 +5,9 @@ import com.santander.bank.DTO.Card.LimitGrowDTO;
 import com.santander.bank.DTO.Card.PayInvoiceDTO;
 import com.santander.bank.DTO.Card.PayOnDebitDTO;
 import com.santander.bank.DTO.Card.PaymentCreditDTO;
+import com.santander.bank.DTO.User.FindCpfDTO;
+import com.santander.bank.Models.Accounts.Account;
+import com.santander.bank.Models.Cards.Card;
 import com.santander.bank.Models.Users.User;
 import com.santander.bank.Repository.User.UserRepo;
 import com.santander.bank.Services.Card.CardService;
@@ -17,6 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -31,6 +38,18 @@ public class CardController {
     private TokenService tokenService;
     @Autowired
     private Gson gson;
+
+    @GetMapping(value = "/get")
+    public ResponseEntity<String> getByUserCpf(@RequestBody @Valid FindCpfDTO data, @RequestHeader Map<String, String> headers) {
+        User u = userRepo.findByUserCpf(data.cpf());
+        String token = headers.get("authorization").replace("Bearer ", "");
+        String cpf = tokenService.validate(token);
+
+        if (u == null) return ResponseEntity.badRequest().build();
+        if (!cpf.equals(u.getCpf())) return ResponseEntity.badRequest().build();
+
+        return ResponseEntity.ok(gson.toJson(u.getCard_id(), String.class));
+    }
 
     @PostMapping(value = "/debit")
     public ResponseEntity<String> payDebitCard(@RequestBody @Valid PayOnDebitDTO data, @RequestHeader Map<String, String> header) {
