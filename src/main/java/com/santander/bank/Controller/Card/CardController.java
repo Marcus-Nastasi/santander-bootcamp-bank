@@ -46,6 +46,7 @@ public class CardController {
         String cpf = tokenService.validate(token);
 
         if (u == null) return ResponseEntity.badRequest().build();
+        if (cpf == null) return ResponseEntity.badRequest().build();
         if (!cpf.equals(u.getCpf())) return ResponseEntity.badRequest().build();
 
         return ResponseEntity.ok(gson.fromJson(u.getCard_id(), List.class));

@@ -36,7 +36,7 @@ public class TokenService {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm).withIssuer("bank-api").build().verify(token).getSubject();
         } catch (JWTVerificationException e) {
-            return "";
+            throw new JWTVerificationException(e.getMessage());
         }
     }
 
