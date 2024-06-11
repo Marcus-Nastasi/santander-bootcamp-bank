@@ -26,7 +26,7 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @CrossOrigin(value = "http://localhost:5173/")
+    @CrossOrigin(value = "http://localhost:3030/")
     @PostMapping(value = "/login")
     public ResponseEntity<String> login(@RequestBody @Valid UserLoginDTO userLoginDTO) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(userLoginDTO.cpf(), userLoginDTO.password());

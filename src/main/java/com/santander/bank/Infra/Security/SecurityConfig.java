@@ -45,7 +45,7 @@ public class SecurityConfig extends DelegatingWebMvcConfiguration {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("http://localhost:5173");
+        registry.addMapping("http://localhost:3030");
     }
 }
 
